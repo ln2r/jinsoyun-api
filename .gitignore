@@ -1,0 +1,9 @@
+#env file
+.env
+
+#packages
+node_modules/
+package-lock.json
+
+#workspace
+.code-workspace
