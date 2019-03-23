@@ -7,8 +7,8 @@ Jinsoyun Bot less automated data api endpoint
 * Event data
 * Dungeons data
 * *Koldrak's lair* time data
-* *Grand Harvest Square* time data (currently not available)
-* *Shackled Isles* time data (currently not available)
+* ~~*Grand Harvest Square* time data~~ Currently no data available
+* *Shackled Isles* time data
 
 ## Installation / Getting Started
 ### Url Endpoints (WIP)
@@ -19,6 +19,7 @@ Jinsoyun Bot less automated data api endpoint
   * `/event/` event data
 * Dungeons data
   * `/dungeons/` all dungeon data
+  * `/dungeons/:name` specific dungeon data (example: `/dungeons/naryu sanctum`)
   * `/drop/:item` getting dungeon data that contain specific item (example: `/drop/draken core`)
 
 ### Self-Host
@@ -50,8 +51,6 @@ If you want to host the api app yourself just follow the instruction below. The 
 
 ## Acknowledgments & Credits
 * **Rizky Sedyanto** - *Initial work* - [ln2r](https://ln2r.web.id/); Discord: ln2r#1691
-* **Database Contributor**
-  * Daily, Weekly and Challenges Rewards data - **Maeyuka**
 
 ## License
 *Code of this project is licensed under MIT license*
