@@ -1,4 +1,4 @@
-const { mongoGetData, setDataFormat} = require('./core');
+const { mongoGetData, setDataFormat, sendAPIReport} = require('./core');
 
 let appRouter = function(app){
 
@@ -17,7 +17,7 @@ let appRouter = function(app){
      * - item drop: /drop/item name (/drop/draken core)
      */
     // all data
-    app.get('/dungeons', async function(req, res){      
+    app.get('/dungeons/', async function(req, res){      
         res.header("Content-Type",'application/json');
 
         try{
@@ -26,9 +26,10 @@ let appRouter = function(app){
 
             res.status(200).send(JSON.stringify(result, null, 4));
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/dungeon\': '+error)
+            console.error('[soyun] [api] error @ \'\/dungeon\': '+error);
+            sendAPIReport(error, 'dungeonsAll-API', 'error');
             res.status(500).send(error);
-        }
+        };
         
     })
 
@@ -48,22 +49,23 @@ let appRouter = function(app){
             for(let i = 0; i < dungeonData.length; i++){
                 dungeonData[i].id = dungeonData[i]._id;
                 delete dungeonData[i]._id;
-            }  
+            } ; 
             
             res.status(200).send(JSON.stringify(result, null, 4));
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/dungeon\/:name\': '+error)
+            console.error('[soyun] [api] error @ \'\/dungeon\/:name\': '+error);
+            sendAPIReport(error, 'dungeonsName-API', 'error');
             res.status(500).send(error);
-        }
-    })
+        };
+    });
 
     // item drop
-    app.get('/drop', async function (req, res){
+    app.get('/dungeons/drop', async function (req, res){
         res.header("Content-Type",'application/json');
         res.status(200).send([]);
     });
 
-    app.get('/drop/:item', async function(req, res){
+    app.get('/dungeons/drop/:item', async function(req, res){
 
         let dropQuery = req.params.item;
         let regx = new RegExp('('+dropQuery+'+)', 'ig');
@@ -92,15 +94,16 @@ let appRouter = function(app){
                 let dungeonData = await mongoGetData('dungeons', dbQuery[i]);
                 if(dungeonData.length != 0){
                     result.push(dungeonData);
-                }
-            }
+                };
+            };
 
             res.status(200).send(JSON.stringify(setDataFormat(result), null, 4));
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/drop\/:items\': '+error)
+            console.error('[soyun] [api] error @ \'\/drop\/:items\': '+error);
+            sendAPIReport(error, 'dungeonsItemDrop-API', 'error');
             res.status(500).send(error);
-        }
-    })
+        };
+    });
 
     // DUNGEON DATA API END HERE
 
@@ -112,7 +115,7 @@ let appRouter = function(app){
      * - all: /challenges
      * - specific challenges type: /challenges/day or type (/challenges/monday)
      */
-    app.get('/challenges', async function(req, res){ 
+    app.get('/challenges/', async function(req, res){ 
         
         res.header("Content-Type",'application/json');
 
@@ -121,12 +124,35 @@ let appRouter = function(app){
 
             res.status(200).send(JSON.stringify(setDataFormat(challengesData), null, 4));
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/challenges\': '+error)
+            console.error('[soyun] [api] error @ \'\/challenges\': '+error);
+            sendAPIReport(error, 'challengesAll-API', 'error');
             res.status(500).send(error);
-        }
+        };
+    });
+
+    app.get('/challenges/daily/', async function(req, res){
+        let typeQuery = req.params.day;
+            typeQuery = typeQuery.toLowerCase();
+
+        res.header("Content-Type",'application/json');
+
+        try{
+            let dbData = await mongoGetData('challenges', {});
+                dbData = dbData[0];    
+    
+            let challengesData = [dbData.monday, dbData.tuesday, dbData.wednesday, dbData.thursday, dbData.friday, dbData.saturday, dbData.sunday];
+        
+            res.status(200).send(challengesData);
+        
+            res.status(200).send(JSON.stringify(challengesData, null, 4));          
+        }catch(error){
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesDaily-API', 'error');
+            res.status(500).send(error);
+        };
     })
     
-    app.get('/challenges/:type', async function(req, res){
+    app.get('/challenges/daily/:day', async function(req, res){
         let typeQuery = req.params.day;
             typeQuery = typeQuery.toLowerCase();
 
@@ -160,36 +186,115 @@ let appRouter = function(app){
                 case 'sunday':
                     challengesData.push(dbData.sunday);
                 break;
-                case 'weekly':
-                    challengesData.push(dbData.weekly);
-                break;
-                case 'koldrak':
-                    challengesData.push(dbData.koldrak);
-                break;
-                case 'grandharvestsquare':
-                    challengesData.push(dbData.grand_harvest_raid);
-                break;
-                case 'grandharvest':
-                    challengesData.push(dbData.grand_harvest_raid);
-                break;
-                case 'shackledisle':
-                    challengesData.push(dbData.shackled_isle);
-                break;
-                case 'br':
-                    challengesData.push(dbData.shackled_isle);
-                break;
             };
         
             if(challengesData.length == 0){
                 res.status(200).send(challengesData);
-            }
+            };
         
             res.status(200).send(JSON.stringify(challengesData, null, 4));          
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error)
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesDailyDay-API', 'error');
             res.status(500).send(error);
-        }
-    })    
+        };
+    });
+    
+    app.get('/challenges/weekly/', async function(req, res){
+
+        res.header("Content-Type",'application/json');
+
+        try{
+            let dbData = await mongoGetData('challenges', {});
+                dbData = dbData[0];    
+    
+            let challengesData = [];
+        
+            challengesData.push(dbData.weekly);
+        
+            if(challengesData.length == 0){
+                res.status(200).send(challengesData);
+            };
+        
+            res.status(200).send(JSON.stringify(challengesData, null, 4));          
+        }catch(error){
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesWeekly-API', 'error');
+            res.status(500).send(error);
+        };
+    });
+
+    app.get('/challenges/grandharvest/', async function(req, res){
+
+        res.header("Content-Type",'application/json');
+
+        try{
+            let dbData = await mongoGetData('challenges', {});
+                dbData = dbData[0];    
+    
+            let challengesData = [];
+        
+            challengesData.push(dbData.grand_harvest_raid);
+        
+            if(challengesData.length == 0){
+                res.status(200).send(challengesData);
+            };
+        
+            res.status(200).send(JSON.stringify(challengesData, null, 4));          
+        }catch(error){
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesGrandHarvest-API', 'error');
+            res.status(500).send(error);
+        };
+    });
+
+    app.get('/challenges/koldrak/', async function(req, res){
+
+        res.header("Content-Type",'application/json');
+
+        try{
+            let dbData = await mongoGetData('challenges', {});
+                dbData = dbData[0];    
+    
+            let challengesData = [];
+        
+            challengesData.push(dbData.koldrak);
+        
+            if(challengesData.length == 0){
+                res.status(200).send(challengesData);
+            };
+        
+            res.status(200).send(JSON.stringify(challengesData, null, 4));          
+        }catch(error){
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesKoldrak-API', 'error');
+            res.status(500).send(error);
+        };
+    });
+
+    app.get('/challenges/shackledisle/', async function(req, res){
+
+        res.header("Content-Type",'application/json');
+
+        try{
+            let dbData = await mongoGetData('challenges', {});
+                dbData = dbData[0];    
+    
+            let challengesData = [];
+        
+            challengesData.push(dbData.shackled_isle);
+        
+            if(challengesData.length == 0){
+                res.status(200).send(challengesData);
+            };
+        
+            res.status(200).send(JSON.stringify(challengesData, null, 4));          
+        }catch(error){
+            console.error('[soyun] [api] error @ \'\/challenges\/:type\': '+error);
+            sendAPIReport(error, 'challangesShackledIsle-API', 'error');
+            res.status(500).send(error);
+        };
+    });
     // CHALLENGES DATA API END HERE
 
     /**
@@ -199,7 +304,7 @@ let appRouter = function(app){
      * available request path: 
      * - all: /event
      */
-    app.get('/event', async function(req, res){
+    app.get('/event/', async function(req, res){
 
         res.header("Content-Type",'application/json');
 
@@ -208,9 +313,10 @@ let appRouter = function(app){
 
             res.status(200).send(JSON.stringify(setDataFormat(eventData), null, 4));
         }catch(error){
-            console.error('[soyun] [api] error @ \'\/event\': '+error)
+            console.error('[soyun] [api] error @ \'\/event\': '+error);
+            sendAPIReport(error, 'event-API', 'error');
             res.send(500).send(error);
-        }
+        };
     })
 
     app.get('/event/:query', async function(req, res){

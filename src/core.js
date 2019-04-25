@@ -45,5 +45,36 @@ module.exports = {
         let formatted = JSON.parse(JSON.stringify(data).split('"_id":').join('"id":'));
 
         return formatted;
+    },
+
+    /**
+     * sendAPIReport
+     * Saving log data to database
+     * @param {Object} logData log message
+     * @param {String} location where the event happens
+     * @param {String} type event type
+     */
+    sendAPIReport: function sendReport(logData, location, type){
+        let now = new Date();
+
+        let logCollectionName = 'logs';
+
+        let logPayload = {
+            'location': location,
+            'type': type,     
+            'time': now,     
+            'message': logData
+        }
+
+        MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db(dbName);
+
+            dbo.collection(logCollectionName).insertOne(logPayload, function(err, res) {  
+                if (err) throw err;    
+                db.close();                
+            });
+        });
+
     }
 }
