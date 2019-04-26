@@ -12,6 +12,7 @@ let appRouter = function(app){
 
     app.get('/', function(req, res){
         res.status(200).send([]);
+        await sendAPIStats();
     });
 
     /**
@@ -37,7 +38,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());        
+        await sendAPIStats();        
     })
 
     // specific data
@@ -63,7 +64,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     // item drop
@@ -109,7 +110,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     // DUNGEON DATA API END HERE
@@ -133,7 +134,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     app.get('/challenges/daily/', async function(req, res){
@@ -155,7 +156,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     })
     
     app.get('/challenges/daily/:day', async function(req, res){
@@ -203,7 +204,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
     
     app.get('/challenges/weekly/', async function(req, res){        
@@ -227,7 +228,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     app.get('/challenges/grandharvest/', async function(req, res){        
@@ -251,7 +252,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     app.get('/challenges/koldrak/', async function(req, res){        
@@ -274,7 +275,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
 
     app.get('/challenges/shackledisle/', async function(req, res){        
@@ -297,7 +298,7 @@ let appRouter = function(app){
             res.status(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     });
     // CHALLENGES DATA API END HERE
 
@@ -319,12 +320,13 @@ let appRouter = function(app){
             res.send(500).send(error);
         };
 
-        await sendAPIStats(Date.now());
+        await sendAPIStats();
     })
 
     app.get('/event/:query', async function(req, res){
         
         res.status(200).send([]);
+        await sendAPIStats();
     })
     // EVENT DATA API END HERE
 }
