@@ -7,11 +7,12 @@ Jinsoyun Bot less automated data api endpoint
 * Event data
 * Dungeons data
 * *Koldrak's lair* time data
-* ~~*Grand Harvest Square* time data~~ Currently no data available
+* *Grand Harvest Square* time data
 * *Shackled Isles* time data
 
 ## Installation / Getting Started
-### Url Endpoints (WIP)
+### Url Endpoints
+Learn more here [http://jinsoyun.ln2r.web.id/api/](http://jinsoyun.ln2r.web.id/api/)
 * Challanges data (Daily, Weekly, Koldrak's, Grand Harvest, Shackled Isles) 
   * `/challenges` all the data
   * `/challenges/:type` specific data (example: `/challenges/monday`)
@@ -28,7 +29,6 @@ If you want to host the api app yourself just follow the instruction below. The 
 **Requirements**:
 * [node.js](https://nodejs.org/)
 * [MongoDB](https://www.mongodb.com/)
-* [nodemon](https://www.npmjs.com/package/nodemon) for easier run
 
 **How-to**:
 * To configure the api, make `.env` file with this data:
@@ -40,14 +40,14 @@ If you want to host the api app yourself just follow the instruction below. The 
   #api settings
   api_port = YOUR_API_CONNECTION_PORT
   ```
-* Make a MongoDB database with the name you specified and then make these collections [(check `mongoexport` for template)](https://github.com/ln2r/jinsoyun/tree/dev/mongoexport)
+* Make a MongoDB database with the name you specified and then make these collections [(check `mongoexport` for template outdated)](https://github.com/ln2r/jinsoyun/tree/dev/mongoexport)
   * `challenges` challenges data
   * `dungeons` dungeon data
   * `events` event info and details
 
 * Open Node.js command prompt and navigate to your root directory.
 * Do `npm update` to get app depencies.
-* Do `nodemon index.js` to run the api.
+* Do `node index.js` to run the api.
 
 ## Acknowledgments & Credits
 * **Rizky Sedyanto** - *Initial work* - [ln2r](https://ln2r.web.id/); Discord: ln2r#1691
