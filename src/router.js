@@ -1,9 +1,16 @@
-const { mongoGetData, setDataFormat, sendAPIReport} = require('./core');
+const { mongoGetData, setDataFormat, sendAPIReport, sendAPIStats} = require('./core');
 
 let appRouter = function(app){
 
-    app.get('/', function(req, res){
+    app.use(async function(req, res, next){
         res.header("Content-Type",'application/json');
+        
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();              
+    })
+
+    app.get('/', function(req, res){
         res.status(200).send([]);
     });
 
@@ -17,8 +24,7 @@ let appRouter = function(app){
      * - item drop: /drop/item name (/drop/draken core)
      */
     // all data
-    app.get('/dungeons/', async function(req, res){      
-        res.header("Content-Type",'application/json');
+    app.get('/dungeons/', async function(req, res){     
 
         try{
             let dungeonData = await mongoGetData('dungeons', {});
@@ -30,16 +36,15 @@ let appRouter = function(app){
             sendAPIReport(error, 'dungeonsAll-API', 'error');
             res.status(500).send(error);
         };
-        
+
+        await sendAPIStats(Date.now());        
     })
 
     // specific data
     app.get('/dungeons/:name', async function(req, res){
 
         let nameQuery = req.params.name;
-        let regx = new RegExp('('+nameQuery+'+)', 'ig');
-
-        res.header("Content-Type",'application/json');
+        let regx = new RegExp('('+nameQuery+'+)', 'ig');        
 
         try{
             let dungeonData = await mongoGetData('dungeons', {name: regx});
@@ -57,20 +62,20 @@ let appRouter = function(app){
             sendAPIReport(error, 'dungeonsName-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
     // item drop
     app.get('/dungeons/drop', async function (req, res){
-        res.header("Content-Type",'application/json');
+        
         res.status(200).send([]);
     });
 
     app.get('/dungeons/drop/:item', async function(req, res){
 
         let dropQuery = req.params.item;
-        let regx = new RegExp('('+dropQuery+'+)', 'ig');
-
-        res.header("Content-Type",'application/json');
+        let regx = new RegExp('('+dropQuery+'+)', 'ig');        
 
         try{
             // array of query to check rewards for common, normal and hard type rewards
@@ -103,6 +108,8 @@ let appRouter = function(app){
             sendAPIReport(error, 'dungeonsItemDrop-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
     // DUNGEON DATA API END HERE
@@ -115,10 +122,7 @@ let appRouter = function(app){
      * - all: /challenges
      * - specific challenges type: /challenges/day or type (/challenges/monday)
      */
-    app.get('/challenges/', async function(req, res){ 
-        
-        res.header("Content-Type",'application/json');
-
+    app.get('/challenges/', async function(req, res){         
         try{
             let challengesData = await mongoGetData('challenges', {});
 
@@ -128,13 +132,13 @@ let appRouter = function(app){
             sendAPIReport(error, 'challengesAll-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
     app.get('/challenges/daily/', async function(req, res){
         let typeQuery = req.params.day;
-            typeQuery = typeQuery.toLowerCase();
-
-        res.header("Content-Type",'application/json');
+            typeQuery = typeQuery.toLowerCase();        
 
         try{
             let dbData = await mongoGetData('challenges', {});
@@ -150,13 +154,13 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesDaily-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     })
     
     app.get('/challenges/daily/:day', async function(req, res){
         let typeQuery = req.params.day;
-            typeQuery = typeQuery.toLowerCase();
-
-        res.header("Content-Type",'application/json');
+            typeQuery = typeQuery.toLowerCase();        
 
         try{
             let dbData = await mongoGetData('challenges', {});
@@ -198,11 +202,11 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesDailyDay-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
     
-    app.get('/challenges/weekly/', async function(req, res){
-
-        res.header("Content-Type",'application/json');
+    app.get('/challenges/weekly/', async function(req, res){        
 
         try{
             let dbData = await mongoGetData('challenges', {});
@@ -222,11 +226,11 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesWeekly-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
-    app.get('/challenges/grandharvest/', async function(req, res){
-
-        res.header("Content-Type",'application/json');
+    app.get('/challenges/grandharvest/', async function(req, res){        
 
         try{
             let dbData = await mongoGetData('challenges', {});
@@ -246,12 +250,11 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesGrandHarvest-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
-    app.get('/challenges/koldrak/', async function(req, res){
-
-        res.header("Content-Type",'application/json');
-
+    app.get('/challenges/koldrak/', async function(req, res){        
         try{
             let dbData = await mongoGetData('challenges', {});
                 dbData = dbData[0];    
@@ -270,12 +273,11 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesKoldrak-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
 
-    app.get('/challenges/shackledisle/', async function(req, res){
-
-        res.header("Content-Type",'application/json');
-
+    app.get('/challenges/shackledisle/', async function(req, res){        
         try{
             let dbData = await mongoGetData('challenges', {});
                 dbData = dbData[0];    
@@ -294,6 +296,8 @@ let appRouter = function(app){
             sendAPIReport(error, 'challangesShackledIsle-API', 'error');
             res.status(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     });
     // CHALLENGES DATA API END HERE
 
@@ -304,10 +308,7 @@ let appRouter = function(app){
      * available request path: 
      * - all: /event
      */
-    app.get('/event/', async function(req, res){
-
-        res.header("Content-Type",'application/json');
-
+    app.get('/event/', async function(req, res){       
         try{
             let eventData = await mongoGetData('events', {});
 
@@ -317,10 +318,12 @@ let appRouter = function(app){
             sendAPIReport(error, 'event-API', 'error');
             res.send(500).send(error);
         };
+
+        await sendAPIStats(Date.now());
     })
 
     app.get('/event/:query', async function(req, res){
-        res.header("Content-Type",'application/json');
+        
         res.status(200).send([]);
     })
     // EVENT DATA API END HERE
