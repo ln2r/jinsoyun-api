@@ -84,8 +84,9 @@ module.exports = {
      */
     sendAPIStats: async function sendStats(){
         let date = new Date();
+            date = date.getUTCDate()+"-"+date.getUTCMonth()+"-"+date.getUTCFullYear();
         let statsCollectionName = "apiStats";
-        let statsData = await module.exports.mongoGetData(statsCollectionName, {date: date.getUTCDate()+"-"+date.getUTCMonth()+"-"+date.getUTCFullYear()});
+        let statsData = await module.exports.mongoGetData(statsCollectionName, {date: date});
         let todayStats = 0;
         let payload;
 
@@ -95,7 +96,7 @@ module.exports = {
             todayStats++;
 
             payload = {
-                "date": date.getUTCDate()+"-"+date.getUTCMonth()+"-"+date.getUTCFullYear(),
+                "date": date,
                 "count": todayStats
             };
         }else{
@@ -112,7 +113,7 @@ module.exports = {
                     db.close();                
                 });
             }else{
-                dbo.collection(statsCollectionName).updateOne({"date": date.getUTCDate()+"-"+date.getUTCMonth()+"-"+date.getUTCFullYear()},
+                dbo.collection(statsCollectionName).updateOne({"date": date},
                 {$set: {"count": todayStats}}, function(err, res) {  
                     if (err) throw err;    
                     db.close();                
