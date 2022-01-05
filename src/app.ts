@@ -1,5 +1,7 @@
 import express from 'express'
 
+import { challengesRoute } from './routes/challenges.route'
+
 class App {
   public app: express.Application
 
@@ -11,6 +13,9 @@ class App {
   private config(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({extended: false}));
+
+    // routing
+    this.app.use("/challenges", challengesRoute);
 
     this.app.use("/", (req, res) => {
       res.status(200).json({
