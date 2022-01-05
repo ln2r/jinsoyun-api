@@ -12,14 +12,13 @@ API for jinsoyun Discord bot.
   * `/challenges` all the data
   * `/challenges/:query` specific data (example: `/challenges/monday`)
 * Character data
-  * `/character/:query` specified character data
+  * `/character/:region/:query` specified character data (example: `/character/na/wquin hollow`)
 * Market data
   * `/market/:query` specified item data
 
 **Requirements**:
 * [node.js](https://nodejs.org/)
 * [MongoDB](https://www.mongodb.com/)
-* [Redis](https://redis.io/)
 
 **How-to**:
 * Configuration located in `.env` file [Example](https://github.com/ln2r/jinsoyun-api/blob/.env.example)
@@ -36,7 +35,8 @@ API for jinsoyun Discord bot.
 
 ## Credits
 * Challenges data obtained from [Hongmoon Archives](https://www.hongmoon-archives.com/challenge/list-of-challenges)
-* Character and market data obtained from [Silver BNS API](https://gitlab.com/Silver_BnS)
+* Character data obtained from Blade and Soul character information page.
+* Market data obtained from [Silver BNS API](https://gitlab.com/Silver_BnS)
 
 ## Contact
 * Discord: ln2r#1691
