@@ -23,13 +23,12 @@ API for jinsoyun Discord bot.
 
 **How-to**:
 * Configuration located in `.env` file [Example](https://github.com/ln2r/jinsoyun-api/blob/.env.example)
-  ```env
-  MONGODB_URL = YOUR_MONGODB_CONNECTION_URL
-
-  API_PORT = YOUR_API_PORT
-  ```
-* Required MongoDB collections
-  * `challenges` challenges data
+  * `MONGODB_URL` = your mongodb connection url
+  * `API_PORT` = your desired port for your api
+  * `BNS_CHALLENGES_URL` = this url points to [hongmoon-archives](https://www.hongmoon-archives.com/challenge/list-of-challenges) list of challanges pages, best to not change it.
+  * `CHALLENGES_EXPIRE` = max time to update challenges data (currently set to 1 week in ms)
+  * `CHARACTER_EXPIRE` = max time to update character data (currently set to 1 hour in ms)
+  * `MARKET_EXPIRE` = max time to update market data (currently set to 1 hour in ms)
 
 * Open Node.js command prompt and navigate to your root directory.
 * Do `npm update` to get app depencies.
