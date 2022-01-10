@@ -1,6 +1,6 @@
 {
   "name": "jinsoyun-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Typescript based express api for a Discord bot with the same name.",
   "exports": "./dist/index.js",
   "scripts": {
