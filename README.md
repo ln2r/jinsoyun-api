@@ -1,10 +1,10 @@
 # Jinsoyun Bot Data API Endpoint
-API for jinsoyun Discord bot.
+API for jinsoyun Discord bot with the same name.
 
 ## Features
 * Daily and Weekly challenges data
 * Charater data
-* Market data
+* Hourly market data
 
 ## Installation / Getting Started
 ### Url Endpoints
@@ -14,7 +14,7 @@ API for jinsoyun Discord bot.
 * Character data
   * `/character/:region/:query` specified character data (example: `/character/na/wquin hollow`)
 * Market data
-  * `/market/:query` specified item data
+  * `/market/:region/:query` specified item data
 
 **Requirements**:
 * [node.js](https://nodejs.org/)
@@ -27,7 +27,6 @@ API for jinsoyun Discord bot.
   * `BNS_CHALLENGES_URL` = this url points to [hongmoon-archives](https://www.hongmoon-archives.com/challenge/list-of-challenges) list of challanges pages, best to not change it.
   * `CHALLENGES_EXPIRE` = max time to update challenges data (currently set to 1 week in ms)
   * `CHARACTER_EXPIRE` = max time to update character data (currently set to 1 hour in ms)
-  * `MARKET_EXPIRE` = max time to update market data (currently set to 1 hour in ms)
 
 * Open Node.js command prompt and navigate to your root directory.
 * Do `npm update` to get app depencies.
