@@ -2,14 +2,6 @@ import { Schema } from "mongoose";
 
 
 export const MarketSchema = new Schema({
-  metadata: {
-    updated: {
-      type: Number,
-    },
-    source: {
-      type: String,
-    },
-  },
   name: {
     type: String
   },

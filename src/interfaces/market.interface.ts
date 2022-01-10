@@ -1,8 +1,4 @@
 export interface MarketInterface {
-  metadata: {
-    updated: number,
-    source: string,
-  }
   name: string,
   region: string,
   id: number,
