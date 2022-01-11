@@ -16,9 +16,11 @@ export class CharacterController {
       const db = await CharacterModel.findOne({name: query});
       
       // check for outdated
-      const outdated = (!db)? true : ((((db as any).updated + parseInt(process.env.CHARACTER_EXPIRE as string)) - currentTime) < 0)? true : false;
-      console.log(`Outdated? ${outdated}`);
-      
+      const outdated = (!db)? true : ((((db as any).metadata.updated + parseInt(process.env.CHARACTER_EXPIRE as string)) - currentTime) < 0)? true : false;
+
+      console.debug(`db exist?: ${(db)? true : false}`)
+      console.debug(`outdated time: ${(((db as any).metadata.updated + parseInt(process.env.CHARACTER_EXPIRE as string)) - currentTime)}`)
+
       let response;      
       if (outdated) {
         console.log(`Refreshing data`);
