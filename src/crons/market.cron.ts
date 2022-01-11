@@ -27,7 +27,6 @@ export const marketFetch = () => {
     // drop cols
     await MarketModel.collection.drop();
     // insertd
-
     await MarketModel.create(marketData);
  
   })
