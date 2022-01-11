@@ -26,9 +26,9 @@ export class CharacterController {
         const equipmentApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/equipments.json?c=${req.params.query}`);
         const abilitiesApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/abilities.json?c=${req.params.query}`);
 
-        // api would respond with empty object when
-        // character not found
-        if (Object.entries(infoApi.data).length !== 0 && Object.entries(equipmentApi).length !== 0 && Object.entries(abilitiesApi).length !== 0) {        
+        // api would respond with empty object or null data
+        // when character not found
+        if (infoApi.data.name !== null && Object.entries(equipmentApi.data).length !== 0 && abilitiesApi.data.base_ability !== null) {        
           response = {
             metadata: {
               updated: currentTime,
@@ -122,6 +122,21 @@ export class CharacterController {
               },
             },
           }
+
+          if (!db) {
+            await CharacterModel.create(response);
+          } else {
+            await CharacterModel.findOneAndUpdate({name: query}, response);
+          }
+  
+          // return fetched
+          console.log('Returning result');
+          res.status(200).json({
+            status: 200,
+            body: response
+          });
+
+        // throw not found 
         } else {
           res.status(404).json({
             status: 404,
@@ -131,21 +146,14 @@ export class CharacterController {
           })
         }
 
-        if (!db) {
-          await CharacterModel.create(response);
-        } else {
-          await CharacterModel.findOneAndUpdate({name: query}, response);
-        }
-
+      // return db data
       } else {
-        response = db;
+        console.log('Returning result');
+        res.status(200).json({
+          status: 200,
+          body: db
+        });
       }
-
-      console.log('Returning result');
-      res.status(200).json({
-        status: 200,
-        body: response
-      });
     } catch (err) {
       if (err instanceof Error) {
         console.error(err);
