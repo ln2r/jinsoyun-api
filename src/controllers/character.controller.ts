@@ -18,9 +18,6 @@ export class CharacterController {
       // check for outdated
       const outdated = (!db)? true : ((((db as any).metadata.updated + parseInt(process.env.CHARACTER_EXPIRE as string)) - currentTime) < 0)? true : false;
 
-      console.debug(`db exist?: ${(db)? true : false}`)
-      console.debug(`outdated time: ${(((db as any).metadata.updated + parseInt(process.env.CHARACTER_EXPIRE as string)) - currentTime)}`)
-
       let response;      
       if (outdated) {
         console.log(`Refreshing data`);
@@ -147,9 +144,7 @@ export class CharacterController {
       console.log('Returning result');
       res.status(200).json({
         status: 200,
-        body: {
-          message: response
-        },
+        body: response
       });
     } catch (err) {
       if (err instanceof Error) {
