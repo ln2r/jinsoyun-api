@@ -8,7 +8,7 @@ export class MarketController {
   
     try {     
       const query = new RegExp(req.params.query, "i")
-      const db = await MarketModel.find({name: query, region: (req.params.region).toUpperCase()});
+      const db = await MarketModel.find({name: query, region: (req.params.region).toUpperCase()}).sort({ ISO: -1 });
       
       if (db.length > 0) {
         res.status(200).json({
