@@ -9,7 +9,10 @@ export const getChallenge = async (query?:string) => {
   const currentTime = new Date().getTime();
   let db = await ChallengesModel.findOne();
 
-  const outdated = (!db)? true : ((((db as any).updated + parseInt(process.env.CHALLENGES_EXPIRE as string)) - currentTime) < 0)? true : false;
+  const outdated = (!db)? true : ((((db as any).metadata.updated + parseInt(process.env.CHALLENGES_EXPIRE as string)) - currentTime) < 0)? true : false;
+
+  console.debug(`db exist?: ${(db)? true : false}`)
+  console.debug(`outdated time: ${(((db as any).metadata.updated + parseInt(process.env.CHALLENGES_EXPIRE as string)) - currentTime)}`)
 
   if (outdated) {
     console.log(`Refreshing data`);
@@ -58,17 +61,17 @@ export const getChallenge = async (query?:string) => {
     return challengesData;
   }
 
-  console.log('Fetched from db');
-  if (query !== 'weekly') {
+  
+  if (query && query !== 'weekly') {
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
     return {
-      updated: (db as any).updated,
+      metadata: (db as any).metadata,
       daily: (db as any).daily[days.indexOf(query as string)],
     }
   } else if (query === 'weekly') {
     return {
-      updated: (db as any).updated,
+      metadata: (db as any).metadata,
       weekly: (db as any).weekly,
     }
   } else {
