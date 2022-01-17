@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import get from 'axios'
 
 import { CharacterModel } from "../models/character.model";
+import { AltsInterface } from "interfaces/alts.interface";
+import { AnyArray } from "mongoose";
 
 // flow: hit db > check update > return
 //                             > hit api > update db > return
@@ -25,6 +27,7 @@ export class CharacterController {
         const infoApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/info.json?c=${req.params.query}`);
         const equipmentApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/equipments.json?c=${req.params.query}`);
         const abilitiesApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/abilities.json?c=${req.params.query}`);
+        const charactersApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/characters.json?guid=${infoApi.data.account_id}`);
 
         // api would respond with empty object or null data
         // when character not found
@@ -47,6 +50,14 @@ export class CharacterController {
             },
             guild: (infoApi.data.guild)? infoApi.data.guild.guild_name : 'n/a',
             profileImage: infoApi.data.profile_url,
+            characters: charactersApi.data.map((character:AltsInterface) => {
+              return {
+                name: character.name,
+                class: character.class_name,
+                level: `Level ${character.level} HM ${character.mastery_level}`,
+                guild: (character.guild)? character.guild.guild_name : 'n/a',
+              }
+            }),
             equipments: {
               head        : (equipmentApi.data.head)? equipmentApi.data.head.equip.item.name : 'n/a',
               eye         : (equipmentApi.data.eye)? equipmentApi.data.eye.equip.item.name : 'n/a',

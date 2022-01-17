@@ -38,6 +38,22 @@ export const CharacterSchema = new Schema({
       type: String,
     },
   },
+  characters: [
+    {
+      name: {
+        type: String,
+      },
+      class: {
+        type: String,
+      },
+      level: {
+        type: String,
+      },
+      guild: {
+        type: String,
+      },
+    },
+  ],
   guild: {
     type: String,
   },

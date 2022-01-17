@@ -14,6 +14,12 @@ export interface CharacterInterface {
     name: string,
     rank: string,
   },
+  characters: {
+    name: string,
+    class: string,
+    level: string,
+    guild: string,
+  }[],
   guild: string,
   profileImage: string,
   equipments: {
@@ -55,7 +61,8 @@ export interface CharacterInterface {
     attackPower: {
       value: number, 
       pvp: number, 
-      boss: number,     },
+      boss: number,     
+    },
     critical: {
       value: number, 
       rate: number, 

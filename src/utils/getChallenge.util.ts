@@ -11,9 +11,6 @@ export const getChallenge = async (query?:string) => {
 
   const outdated = (!db)? true : ((((db as any).metadata.updated + parseInt(process.env.CHALLENGES_EXPIRE as string)) - currentTime) < 0)? true : false;
 
-  console.debug(`db exist?: ${(db)? true : false}`)
-  console.debug(`outdated time: ${(((db as any).metadata.updated + parseInt(process.env.CHALLENGES_EXPIRE as string)) - currentTime)}`)
-
   if (outdated) {
     console.log(`Refreshing data`);
 
