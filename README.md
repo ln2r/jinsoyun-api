@@ -40,7 +40,7 @@ API for jinsoyun Discord bot with the same name.
 * Challenges data obtained from [Hongmoon Archives](https://www.hongmoon-archives.com/challenge/list-of-challenges)
 * Market data obtained from [Silver BNS API](https://gitlab.com/Silver_BnS)
 * Character data obtained from Blade and Soul character information page.
-* Event data obtained fromo Blade and Soul news page.
+* Event data obtained from Blade and Soul news page.
 
 ## Contact
 * Discord: ln2r#1691
