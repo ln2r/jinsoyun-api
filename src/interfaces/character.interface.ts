@@ -1,8 +1,7 @@
+import { MetadataInterface } from "./metadata.interface";
+
 export interface CharacterInterface {
-  metadata: {
-    updated: number,
-    source: string,
-  },
+  metadata: MetadataInterface,
   name: string,
   server: string,
   lastSeen: string,
