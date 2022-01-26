@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import get from 'axios'
 
 import { CharacterModel } from "../models/character.model";
-import { AltsInterface } from "interfaces/alts.interface";
-import { AnyArray } from "mongoose";
+import { AltsInterface } from "../interfaces/alts.interface";
 
 // flow: hit db > check update > return
 //                             > hit api > update db > return
