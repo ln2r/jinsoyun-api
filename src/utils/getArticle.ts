@@ -58,7 +58,7 @@ export const getArticle = async (url:string) => {
   })
 
   return {
-    url: `https://www.bladeandsoul.com/en-us/${articleUrl}`,
+    url: `https://www.bladeandsoul.com/en-us${articleUrl}`,
     events: events,
   };
 }
