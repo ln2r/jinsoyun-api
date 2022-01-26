@@ -1,5 +1,5 @@
 import { EventModel } from '../models/event.model';
-import { getArticle } from './getArticle';
+import { getArticle } from './getArticle.util';
 
 export const getEvent = async () => {
   const currentTime = new Date().getTime();
