@@ -3,6 +3,7 @@ import get from 'axios'
 
 import { CharacterModel } from "../models/character.model";
 import { AltsInterface } from "../interfaces/alts.interface";
+import { CharacterApiInterface } from "../interfaces/characterApi.interface";
 
 // flow: hit db > check update > return
 //                             > hit api > update db > return
@@ -21,7 +22,7 @@ export class CharacterController {
 
       let response;      
       if (outdated) {
-        console.log(`Refreshing data`);
+        console.log(`Requested character data outdated, refreshing`);
 
         const infoApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/info.json?c=${req.params.query}`);
         const equipmentApi = await get(`http://${req.params.region}-bns.ncsoft.com/ingame/api/character/equipments.json?c=${req.params.query}`);
@@ -30,7 +31,9 @@ export class CharacterController {
 
         // api would respond with empty object or null data
         // when character not found
-        if (infoApi.data.name !== null && Object.entries(equipmentApi.data).length !== 0 && abilitiesApi.data.base_ability !== null) {        
+        if (infoApi.data.name !== null && Object.entries(equipmentApi.data).length !== 0 && abilitiesApi.data.base_ability !== null) {   
+          const status = charactersApi.data.filter((chara:CharacterApiInterface) => chara.name === infoApi.data.name);
+
           response = {
             metadata: {
               updated: currentTime,
@@ -39,6 +42,7 @@ export class CharacterController {
             name: infoApi.data.name,
             server: infoApi.data.server_name,
             lastSeen: infoApi.data.geo_zone_name,
+            playing: status[0].playing,
             race: infoApi.data.race_name,
             gender: infoApi.data.gender_name,
             class: infoApi.data.class_name,

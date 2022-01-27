@@ -5,6 +5,7 @@ export interface CharacterInterface {
   name: string,
   server: string,
   lastSeen: string,
+  playing: boolean,
   race: string,
   gender: string,
   class: string,

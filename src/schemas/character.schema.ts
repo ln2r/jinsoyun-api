@@ -18,6 +18,9 @@ export const CharacterSchema = new Schema({
   lastSeen: {
     type: String,
   },
+  playing: {
+    type: Boolean,
+  },
   race: {
     type: String,
   },
