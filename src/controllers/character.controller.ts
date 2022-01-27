@@ -3,7 +3,6 @@ import get from 'axios'
 
 import { CharacterModel } from "../models/character.model";
 import { AltsInterface } from "../interfaces/alts.interface";
-import { CharacterApiInterface } from "../interfaces/characterApi.interface";
 
 // flow: hit db > check update > return
 //                             > hit api > update db > return
@@ -32,7 +31,7 @@ export class CharacterController {
         // api would respond with empty object or null data
         // when character not found
         if (infoApi.data.name !== null && Object.entries(equipmentApi.data).length !== 0 && abilitiesApi.data.base_ability !== null) {   
-          const status = charactersApi.data.filter((chara:CharacterApiInterface) => chara.name === infoApi.data.name);
+          const status = charactersApi.data.filter((chara:AltsInterface) => chara.name === infoApi.data.name);
 
           response = {
             metadata: {
@@ -59,6 +58,7 @@ export class CharacterController {
                 class: character.class_name,
                 level: `Level ${character.level} HM ${character.mastery_level}`,
                 guild: (character.guild)? character.guild.guild_name : 'n/a',
+                playing: character.playing,
               }
             }),
             equipments: {

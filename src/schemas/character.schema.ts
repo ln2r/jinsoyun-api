@@ -55,6 +55,9 @@ export const CharacterSchema = new Schema({
       guild: {
         type: String,
       },
+      playing: {
+        type: Boolean,
+      }
     },
   ],
   guild: {

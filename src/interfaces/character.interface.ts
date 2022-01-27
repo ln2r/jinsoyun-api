@@ -19,6 +19,7 @@ export interface CharacterInterface {
     class: string,
     level: string,
     guild: string,
+    playing: boolean,
   }[],
   guild: string,
   profileImage: string,
