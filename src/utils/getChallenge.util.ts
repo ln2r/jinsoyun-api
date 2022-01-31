@@ -1,6 +1,8 @@
 import get from 'axios'
+import { ChallengesInterface } from 'interfaces/challenges.interface';
 
 import { ChallengesModel } from '../models/challenges.model';
+import { getChallengeResponse } from './getChallengesResponse.util';
 
 // flow: hit db > check update > return
 //                             > hit site > update db > return
@@ -55,23 +57,8 @@ export const getChallenge = async (query?:string) => {
       await ChallengesModel.findOneAndUpdate({}, challengesData);
     }
 
-    return challengesData;
+    return getChallengeResponse(query, challengesData);
   }
-
   
-  if (query && query !== 'weekly') {
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
-    return {
-      metadata: (db as any).metadata,
-      daily: (db as any).daily[days.indexOf(query as string)],
-    }
-  } else if (query === 'weekly') {
-    return {
-      metadata: (db as any).metadata,
-      weekly: (db as any).weekly,
-    }
-  } else {
-    return db
-  }
+  return getChallengeResponse(query, db);
 }
