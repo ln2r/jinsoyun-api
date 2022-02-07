@@ -1,5 +1,4 @@
 import get from 'axios'
-import { ChallengesInterface } from 'interfaces/challenges.interface';
 
 import { ChallengesModel } from '../models/challenges.model';
 import { getChallengeResponse } from './getChallengesResponse.util';
@@ -45,7 +44,7 @@ export const getChallenge = async (query?:string) => {
         
         idx = (idx < max)? idx += 1 : 0
       } else if (section === 'weekly') {
-        if (index % 2 !== 0) {
+        if (index % 2 == 0 && !data.includes('Content')) {
           (challengesData as any)[section].push(data.replace(/(&quot;&gt;)|(&lt);/igm, ''));
         }
       }
