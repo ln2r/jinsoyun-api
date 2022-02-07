@@ -1,8 +1,7 @@
+import { MetadataInterface } from "./metadata.interface";
+
 export interface ChallengesInterface {
-  metadata: {
-    updated: number,
-    source: string,
-  },
+  metadata: MetadataInterface,
   daily: string[][],
   weekly: string[]
 }

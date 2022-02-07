@@ -1,11 +1,11 @@
+import { MetadataInterface } from "./metadata.interface";
+
 export interface CharacterInterface {
-  metadata: {
-    updated: number,
-    source: string,
-  },
+  metadata: MetadataInterface,
   name: string,
   server: string,
   lastSeen: string,
+  playing: boolean,
   race: string,
   gender: string,
   class: string,
@@ -19,6 +19,7 @@ export interface CharacterInterface {
     class: string,
     level: string,
     guild: string,
+    playing: boolean,
   }[],
   guild: string,
   profileImage: string,

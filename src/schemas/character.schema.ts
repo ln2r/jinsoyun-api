@@ -18,6 +18,9 @@ export const CharacterSchema = new Schema({
   lastSeen: {
     type: String,
   },
+  playing: {
+    type: Boolean,
+  },
   race: {
     type: String,
   },
@@ -52,6 +55,9 @@ export const CharacterSchema = new Schema({
       guild: {
         type: String,
       },
+      playing: {
+        type: Boolean,
+      }
     },
   ],
   guild: {

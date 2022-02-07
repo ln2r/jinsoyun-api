@@ -1,6 +1,7 @@
 import get from 'axios'
 
 import { ChallengesModel } from '../models/challenges.model';
+import { getChallengeResponse } from './getChallengesResponse.util';
 
 // flow: hit db > check update > return
 //                             > hit site > update db > return
@@ -43,7 +44,7 @@ export const getChallenge = async (query?:string) => {
         
         idx = (idx < max)? idx += 1 : 0
       } else if (section === 'weekly') {
-        if (index % 2 !== 0) {
+        if (index % 2 == 0 && !data.includes('Content')) {
           (challengesData as any)[section].push(data.replace(/(&quot;&gt;)|(&lt);/igm, ''));
         }
       }
@@ -55,23 +56,8 @@ export const getChallenge = async (query?:string) => {
       await ChallengesModel.findOneAndUpdate({}, challengesData);
     }
 
-    return challengesData;
+    return getChallengeResponse(query, challengesData);
   }
-
   
-  if (query && query !== 'weekly') {
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-
-    return {
-      metadata: (db as any).metadata,
-      daily: (db as any).daily[days.indexOf(query as string)],
-    }
-  } else if (query === 'weekly') {
-    return {
-      metadata: (db as any).metadata,
-      weekly: (db as any).weekly,
-    }
-  } else {
-    return db
-  }
+  return getChallengeResponse(query, db);
 }

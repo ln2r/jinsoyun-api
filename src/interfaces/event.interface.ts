@@ -1,8 +1,7 @@
+import { MetadataInterface } from "./metadata.interface";
+
 export interface EventInterface {
-  metadata: {
-    updated: number,
-    source: string,
-  },
+  metadata: MetadataInterface,
   events: {
     title: string,
     duration: string,
