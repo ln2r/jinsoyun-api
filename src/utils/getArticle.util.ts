@@ -10,8 +10,11 @@ const getUrl = (html:string) => {
       articles.map((idx, element) => {
         const content = $(element).text();
 
+        // checking if there's any patch notes
         if (content.includes('Patch Notes')) {
           resolve($(element).find('a').attr('href'))
+        } else {
+          resolve (null)
         }
       })
     } catch (err) {
@@ -25,7 +28,12 @@ const getUrl = (html:string) => {
 export const getArticle = async (url:string) => {
   const newsPage = await get(url as string);
   const articleUrl = await getUrl(newsPage.data);
-  const articleData = await get(`https://www.bladeandsoul.com/en-us/${articleUrl}`);
+  // return null if there's no new "patch notes"
+  if (!articleUrl) {
+    return null
+  }
+
+  const articleData = await get(`https://www.bladeandsoul.com/en-us/news/article/8576/infinite-inferno-patch-notes`);
   
   const $ = load(articleData.data);
   const body = $('.article-body').contents();
@@ -58,7 +66,7 @@ export const getArticle = async (url:string) => {
   })
 
   return {
-    url: `https://www.bladeandsoul.com/en-us${articleUrl}`,
+    url: `https://www.bladeandsoul.com/en-us/news/article/8576/infinite-inferno-patch-notes`,
     events: events,
   };
 }

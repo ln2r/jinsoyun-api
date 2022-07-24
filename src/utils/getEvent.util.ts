@@ -11,21 +11,26 @@ export const getEvent = async () => {
     console.log('Event data outdated, refreshing');
 
     const article = await getArticle(process.env.BNS_NEWS_URL as string);
-    const eventData = {
-      metadata: {
-        updated: currentTime,
-        source: article.url
-      },
-      events: article.events,
-    };
-
-    if (!db) {
-      await EventModel.create(eventData);
+    // handling if the "latest" articles aren't patch notes
+    if (article) {
+      const eventData = {
+        metadata: {
+          updated: currentTime,
+          source: article.url
+        },
+        events: article.events,
+      };
+  
+      if (!db) {
+        await EventModel.create(eventData);
+      } else {
+        await EventModel.findOneAndUpdate({}, eventData);
+      }
+  
+      return eventData;
     } else {
-      await EventModel.findOneAndUpdate({}, eventData);
+      return db;
     }
-
-    return eventData;
   }
 
   return db;
